@@ -54,18 +54,30 @@ int readYear() {
     return year;
 }
 
+Birthdate inputPersonBirthdate(){
+    Birthdate personBirthdate;
+    cout << "Enter your birthdate";
+    cout << endl;
+    personBirthdate.day = readDay();
+    personBirthdate.month = readMonth();
+    personBirthdate.year = readYear();
+    return personBirthdate;
+}
+
+string inputPersonName(){
+    string personName;
+    cout << "Enter the name:";
+    cin >> personName;
+    cout << "Hello, " << personName;
+    cout << endl;
+    return personName;
+}
+
 void inputPersons(){
     int option = 1;
     do {
-        cout << "Enter the name:";
-        cin >> person.name;
-        cout << "Hello, " << person.name;
-        cout << endl;
-        cout << "Enter your birthdate";
-        cout << endl;
-        person.birthdate.day = readDay();
-        person.birthdate.month = readMonth();
-        person.birthdate.year = readYear();
+        person.name = inputPersonName();
+        person.birthdate = inputPersonBirthdate();
         persons[n] = person;
         n++;
         cout << "1 - continue, 0 - finish input:";
@@ -79,41 +91,75 @@ void displayPerson(Person person) {
     cout << "Birthdate: " << person.birthdate.day << "." << person.birthdate.month << "." << person.birthdate.year << endl;
 }
 
-int main() {
-
-    inputPersons();
-
+void displayAllPersons(){
     for (int i = 0; i < n; i++) {
         displayPerson(persons[i]);
     }
+}
+
+void searchPersonByDay(int dayToSearch){
+    for (int i = 0; i < n; i++) {
+        if (persons[i].birthdate.day == dayToSearch) {
+            displayPerson(persons[i]);
+        }
+    }
+}
+
+void searchPersonByMonth(int monthToSearch){
+    for (int i = 0; i < n; i++) {
+        if (persons[i].birthdate.month == monthToSearch) {
+            displayPerson(persons[i]);
+        }
+    }
+}
+
+void searchPersonByYear(int yearToSearch){
+    for (int i = 0; i < n; i++) {
+        if (persons[i].birthdate.year == yearToSearch) {
+            displayPerson(persons[i]);
+        }
+    }
+}
+
+void searchPersonByBirthdate(Birthdate personBirthdate){
+    for (int i = 0; i < n; i++) {
+        if (
+                persons[i].birthdate.year == personBirthdate.year
+                &&
+                persons[i].birthdate.month == personBirthdate.month
+                &&
+                persons[i].birthdate.day == personBirthdate.day
+        ) {
+            displayPerson(persons[i]);
+        }
+    }
+}
+
+int main() {
+
+    inputPersons();
+    displayAllPersons();
 
     int day;
     cout << "Introduce the day of the month:" << endl;
     cin >> day;
-    for (int i = 0; i < n; i++) {
-        if (persons[i].birthdate.day == day) {
-            displayPerson(persons[i]);
-        }
-    }
+    searchPersonByDay(day);
 
 
     int month;
     cout << "Introduce the month of the year:" << endl;
     cin >> month;
-    for (int i = 0; i < n; i++) {
-        if (persons[i].birthdate.month == month) {
-            displayPerson(persons[i]);
-        }
-    }
+    searchPersonByMonth(month);
 
     int year;
     cout << "Introduce the year:" << endl;
     cin >> year;
-    for (int i = 0; i < n; i++) {
-        if (persons[i].birthdate.year == year) {
-            displayPerson(persons[i]);
-        }
-    }
+    searchPersonByYear(year);
+
+
+    Birthdate birthdate;
+    birthdate = inputPersonBirthdate();
+    searchPersonByBirthdate(birthdate);
 
     return 0;
 }
