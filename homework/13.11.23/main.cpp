@@ -135,31 +135,132 @@ void searchPersonByBirthdate(Birthdate personBirthdate){
     }
 }
 
+// age
+// who is older
+// who is younger
+// persons older than
+// persons in alphabetical order
+// persons order by age
+// persons with same age
+
+
+int dateDifference (Birthdate firstDate, Birthdate secondDate) {
+    int daysInMonth[12] = {31, 28, 31, 30, 31, 30 , 31, 31, 30, 31 ,30, 31};
+    int month = 0;
+    int daysPassedFirstDate = 0;
+    while (month < firstDate.month) {
+        daysPassedFirstDate += daysInMonth[month - 1];
+        month++;
+    }
+    daysPassedFirstDate += firstDate.day;
+
+    month = 0;
+    int daysPassedSecondDate = 0;
+    while(month < secondDate.month) {
+        daysPassedSecondDate += daysInMonth[month - 1];
+        month++;
+    }
+    daysPassedSecondDate += secondDate.day;
+    daysPassedSecondDate += (secondDate.year -  firstDate.year) * 365;
+
+    for (int year = firstDate.year - 1; year <= secondDate.year - 1; year++) {
+        if (year % 4 == 0 && year % 100 != 0) {
+            daysPassedSecondDate++;
+        }
+    }
+
+    return daysPassedSecondDate - daysPassedFirstDate;
+}
+
+// Jan = 31
+// Feb = 28
+
+// Start Date = 31.01.2023 => 31 = 31
+// End date = 01.02.2023 => 32 = 1 * 31 + 1
+
+// Start Date = 31.01.2023 => 31 = 31
+// End date = 05.02.2023 => 36 = 1 * 31 + 5
+
+// Start Date = 10.01.2023 => 10 = 10
+// End date = 15.03.2023 => ? = 1 * 31 + 1 * 28 + 15
+
 int main() {
 
-    inputPersons();
-    displayAllPersons();
+//    Birthdate startDate = {.day = 20, .month = 4, .year = 2006};
+//    Birthdate endDate = {.day = 20, .month = 11, .year = 2023};
+//
+//    cout << dateDifference(startDate, endDate);
 
-    int day;
-    cout << "Introduce the day of the month:" << endl;
-    cin >> day;
-    searchPersonByDay(day);
+//    inputPersons();
+//    displayAllPersons();
+//
+//    int day;
+//    cout << "Introduce the day of the month:" << endl;
+//    cin >> day;
+//    searchPersonByDay(day);
+//
+//
+//    int month;
+//    cout << "Introduce the month of the year:" << endl;
+//    cin >> month;
+//    searchPersonByMonth(month);
+//
+//    int year;
+//    cout << "Introduce the year:" << endl;
+//    cin >> year;
+//    searchPersonByYear(year);
+//
+//
+//    Birthdate birthdate;
+//    birthdate = inputPersonBirthdate();
+//    searchPersonByBirthdate(birthdate);
+
+    persons[0] = {
+            .name = "Cristi",
+            .birthdate = {
+                    .day = 20,
+                    .month = 4,
+                    .year = 2006
+            }
+    };
+
+    persons[1] = {
+            .name = "Sergiu",
+            .birthdate = {
+                    .day = 23,
+                    .month = 7,
+                    .year = 1984
+            }
+    };
+
+    persons[2] = {
+            .name = "Cristina",
+            .birthdate = {
+                    .day = 24,
+                    .month = 9,
+                    .year = 1985
+            }
+    };
+
+    Birthdate currentDate = {.day = 20, .month = 11, .year = 2023};
+
+    int youngestPersonIndex = 0;
+    int oldestPersonIndex = 0;
+    for (int i = 0; i < 3; i++) {
+        cout << persons[i].name << " = " << dateDifference(persons[i].birthdate, currentDate) << endl;
+        if (dateDifference(persons[youngestPersonIndex].birthdate, persons[i].birthdate) > 0){
+            youngestPersonIndex = i;
+        }
+
+        if (dateDifference(persons[oldestPersonIndex].birthdate, persons[i].birthdate) < 0){
+            oldestPersonIndex = i;
+        }
+    }
+
+    cout << "The youngest person is: " << persons[youngestPersonIndex].name << " = " << dateDifference(persons[youngestPersonIndex].birthdate, currentDate) << endl;
+    cout << "The oldest person is: " << persons[oldestPersonIndex].name << " = " << dateDifference(persons[oldestPersonIndex].birthdate, currentDate) << endl;
 
 
-    int month;
-    cout << "Introduce the month of the year:" << endl;
-    cin >> month;
-    searchPersonByMonth(month);
-
-    int year;
-    cout << "Introduce the year:" << endl;
-    cin >> year;
-    searchPersonByYear(year);
-
-
-    Birthdate birthdate;
-    birthdate = inputPersonBirthdate();
-    searchPersonByBirthdate(birthdate);
 
     return 0;
 }
